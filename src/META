@@ -1,0 +1,10 @@
+# OASIS_START
+# DO NOT EDIT (digest: b62894c16eacfd84e00e644f81007669)
+version = "1.5"
+description = "Optional compilation with cpp-like directives"
+requires = "camlp4"
+archive(syntax, preprocessor) = "optcomp.cma"
+archive(syntax, toploop) = "optcomp.cma"
+exists_if = "optcomp.cma"
+# OASIS_STOP
+
