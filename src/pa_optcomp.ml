@@ -288,7 +288,7 @@ let rec eval env = function
 
   (* Boolean operations *)
   | <:expr< not $x$ >> -> Bool(not (eval_bool env x))
-  | <:expr< $x$ or $y$ >> -> Bool(eval_bool env x or eval_bool env y)
+  | <:expr< $x$ or $y$ >> -> Bool(eval_bool env x || eval_bool env y)
   | <:expr< $x$ || $y$ >> -> Bool(eval_bool env x || eval_bool env y)
   | <:expr< $x$ && $y$ >> -> Bool(eval_bool env x && eval_bool env y)
 
@@ -475,20 +475,27 @@ let parse_ident stream =
 let parse_until entry is_stop_token stream =
   (* Lists of opened brackets *)
   let opened_brackets = ref [] in
-
+  let eoi = ref None in
   let end_loc = ref Loc.ghost in
 
   (* Return the next token of [stream] until all opened parentheses
      have been closed and a newline is reached *)
   let rec next_token _ =
-    Some(match Stream.next stream, !opened_brackets with
+    match !eoi with
+    | Some _ as x -> x
+    | None ->
+        Some(match Stream.next stream, !opened_brackets with
            | (tok, loc), [] when is_stop_token tok ->
                end_loc := loc;
-               (EOI, loc)
+               let x = (EOI, loc) in
+               eoi := Some x;
+               x
 
            | (EOI, loc), _ ->
                end_loc := loc;
-               (EOI, loc)
+               let x = (EOI, loc) in
+               eoi := Some x;
+               x
 
            | ((KEYWORD ("(" | "[" | "{" as b) | SYMBOL ("(" | "[" | "{" as b)), _) as x, l ->
                opened_brackets := b :: l;
