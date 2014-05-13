@@ -1,12 +1,27 @@
 #!/bin/sh
 
 # OASIS_START
-type gmake > /dev/null 2>/dev/null
-if [ "$?" -eq 0 ]; then
-  MAKE=gmake
-else
-  MAKE=make
-fi
+# DO NOT EDIT (digest: dc86c2ad450f91ca10c931b6045d0499)
+set -e
 
-$MAKE configure CONFIGUREFLAGS="$*"
+FST=true
+for i in "$@"; do
+  if $FST; then
+    set --
+    FST=false
+  fi
+
+  case $i in
+    --*=*)
+      ARG=${i%%=*}
+      VAL=${i##*=}
+      set -- "$@" "$ARG" "$VAL"
+      ;;
+    *)
+      set -- "$@" "$i"
+      ;;
+  esac
+done
+
+ocaml setup.ml -configure "$@"
 # OASIS_STOP
