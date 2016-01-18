@@ -780,7 +780,7 @@ let rec next_token lexer state_ref =
           (* Try to looks up in all include directories *)
           let fname =
             try
-              List.find (fun dir -> Sys.file_exists (Filename.concat dir fname)) !dirs
+              Filename.concat (List.find (fun dir -> Sys.file_exists (Filename.concat dir fname)) !dirs) fname
             with
                 (* Just try in the current directory *)
                 Not_found -> fname
