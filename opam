@@ -1,0 +1,18 @@
+opam-version: "1.2"
+name: "optcomp"
+version: "1.6"
+maintainer: "Jérémie Dimino <jeremie@dimino.org>"
+authors: "Jérémie Dimino <jeremie@dimino.org>"
+homepage: "https://github.com/diml/optcomp"
+bug-reports: "https://github.com/diml/optcomp/issues"
+dev-repo: "https://github.com/diml/optcomp.git"
+build: [
+  ["./configure" "--prefix=%{prefix}%"]
+  [make]
+]
+install: [make "install"]
+depends: [
+  "ocamlfind"
+  "camlp4"
+  "base-bytes"
+]

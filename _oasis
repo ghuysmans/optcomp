@@ -27,7 +27,7 @@ Flag binaries
 # +-------------------------------------------------------------------+
 
 Library optcomp
-  BuildDepends: camlp4, camlp4.quotations.o
+  BuildDepends: camlp4, camlp4.quotations.o, bytes
   XMETADescription: Optional compilation with cpp-like directives
   XMETARequires: camlp4
   XMETAType: syntax
